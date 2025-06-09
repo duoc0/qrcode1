@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <title>Ngày giờ trên ảnh</title>
+
+  <!-- Full màn hình trên iPhone khi Add to Home Screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+  <!-- iOS icon -->
+  <link rel="apple-touch-icon" href="icon.png" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .background {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('QRCODE.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: brightness(1);
+      z-index: -1;
+    }
+
+    .datetime1 {
+      position: absolute;
+      top: 181px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: black;
+      font-size: 13px;
+      user-select: none;
+    }
+
+    .datetime2 {
+      position: absolute;
+      top: 368.15px;
+      left: calc(50% - 28px);
+      transform: translateX(-50%);
+      color: #666666;
+      font-size: 16.5px;
+      line-height: 25px;
+      user-select: none;
+    }
+
+    .elapsed-time {
+      position: absolute;
+      top: 472.35px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #00CC33;
+      font-size: 14px;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div id="datetime1" class="datetime1">Loading...</div>
+  <div id="datetime2" class="datetime2">Loading...</div>
+  <div id="elapsedTime" class="elapsed-time">Loading...</div>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mi = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+
+      const dateTimeFull = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+      const dateOnly = `${yyyy}-${mm}-${dd}`;
+
+      document.getElementById('datetime1').textContent = dateTimeFull;
+      document.getElementById('datetime2').textContent = dateOnly;
+
+      const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
+      let diff = now - startTime;
+      if (diff < 0) diff = 0;
+
+      const elapsedHours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+      const elapsedMinutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+      const elapsedSeconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+
+      const elapsedStr = `${elapsedHours}:${elapsedMinutes}:${elapsedSeconds}`;
+      document.getElementById('elapsedTime').textContent = elapsedStr;
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+  </script>
+</body>
+</html>
