@@ -88,7 +88,7 @@
       const ss = String(now.getSeconds()).padStart(2, '0');
 
       const dateTimeFull = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;   // ngày tháng không số 0
-      const dateOnly = `${yyyy}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;  // giữ nguyên định dạng 2 số
+      const dateOnly = `${yyyy}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}  08:00`;  // giữ nguyên định dạng 2 số
 
       document.getElementById('datetime1').textContent = dateTimeFull;
       document.getElementById('datetime2').textContent = dateOnly;
