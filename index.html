@@ -6,11 +6,11 @@
   
   <title>Ngày giờ trên ảnh</title>
 
-  <!-- Thêm để chạy full màn hình trên iPhone khi Add to Home Screen -->
+  <!-- Full màn hình trên iPhone khi Add to Home Screen -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   
-  <!-- Thêm icon cho iOS (thay 'icon.png' bằng đường dẫn icon của bạn) -->
+  <!-- iOS icon -->
   <link rel="apple-touch-icon" href="icon.png" />
 
   <style>
@@ -36,6 +36,7 @@
       filter: brightness(1);
       z-index: -1;
     }
+
     .datetime1 {
       position: absolute;
       top: 181px;
@@ -48,7 +49,7 @@
 
     .datetime2 {
       position: absolute;
-      top: 368.6px;       /* đã tăng thêm 100px từ 180px */
+      top: 368.6px;
       left: calc(50% - 28px);
       transform: translateX(-50%);
       color: #666666;
@@ -61,7 +62,7 @@
       top: 345.5px;
       left: 50%;
       transform: translateX(-50%);
-      color: #00CC33;             /* màu xanh lá cây yêu cầu */
+      color: #00CC33;
       font-size: 14px;
       user-select: none;
     }
@@ -85,13 +86,12 @@
       const mi = String(now.getMinutes()).padStart(2, '0');
       const ss = String(now.getSeconds()).padStart(2, '0');
 
-      const dateTimeFull = ${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss};
-      const dateOnly = ${yyyy}-${mm}-${dd};
+      const dateTimeFull = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+      const dateOnly = `${yyyy}-${mm}-${dd}`;
 
       document.getElementById('datetime1').textContent = dateTimeFull;
       document.getElementById('datetime2').textContent = dateOnly;
 
-      //tinh thoi gian dem nguoc
       const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
       let diff = now - startTime;
       if (diff < 0) diff = 0;
@@ -100,7 +100,7 @@
       const elapsedMinutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
       const elapsedSeconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
 
-      const elapsedStr = ${elapsedHours}:${elapsedMinutes}:${elapsedSeconds};
+      const elapsedStr = `${elapsedHours}:${elapsedMinutes}:${elapsedSeconds}`;
       document.getElementById('elapsedTime').textContent = elapsedStr;
     }
 
