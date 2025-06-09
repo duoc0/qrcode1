@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ngày giờ trên ảnh</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .background {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('QRCODE.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: brightness(0.7);
+      z-index: -1;
+    }
+
+    .datetime1 {
+      position: absolute;
+      top: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: black;
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .datetime2 {
+      position: absolute;
+      top: 266.5px;       /* đã tăng thêm 100px từ 180px */
+      left: calc(50% - 20px);
+      transform: translateX(-50%);
+      color: rgb(70, 70, 70);
+      font-size: 12.5px;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div id="datetime1" class="datetime1">Loading...</div>
+  <div id="datetime2" class="datetime2">Loading...</div>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mi = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+
+      const dateTimeFull = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+      const dateOnly = `${yyyy}-${mm}-${dd}`;
+
+      document.getElementById('datetime1').textContent = dateTimeFull;
+      document.getElementById('datetime2').textContent = dateOnly;
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+  </script>
+</body>
+</html>
