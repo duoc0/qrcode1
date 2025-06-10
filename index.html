@@ -29,7 +29,7 @@
     .background {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url('https://drive.google.com/uc?export=view&id=1D8QvVHT55uck4PEGFWFfWdFs5popbHqa');
+      background-image: url('QRCODE.jpg');
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
@@ -58,6 +58,16 @@
       user-select: none;
     }
 
+    .blinking-text {
+      position: absolute;
+      top: 460px; /* ngay trên elapsed time */
+      left: 50%;
+      transform: translateX(-50%);
+      color: #00CC33;
+      font-size: 17px;
+      user-select: none;
+    }
+
     .elapsed-time {
       position: absolute;
       top: 482.35px;
@@ -73,6 +83,7 @@
   <div class="background"></div>
   <div id="datetime1" class="datetime1">Loading...</div>
   <div id="datetime2" class="datetime2">Loading...</div>
+  <div id="blinkingText" class="blinking-text">ĐANG TÍNH GIỜ...</div>
   <div id="elapsedTime" class="elapsed-time">Loading...</div>
 
   <script>
@@ -80,15 +91,15 @@
       const now = new Date();
 
       const yyyy = now.getFullYear();
-      const mm = now.getMonth() + 1;        // tháng không số 0
-      const dd = now.getDate();             // ngày không số 0
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
 
       const hh = String(now.getHours()).padStart(2, '0');
       const mi = String(now.getMinutes()).padStart(2, '0');
       const ss = String(now.getSeconds()).padStart(2, '0');
 
-      const dateTimeFull = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;   // ngày tháng không số 0
-      const dateOnly = `${yyyy}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}  08:00`;  // giữ nguyên định dạng 2 số
+      const dateTimeFull = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+      const dateOnly = `${yyyy}-${mm}-${dd}  08:00`;
 
       document.getElementById('datetime1').textContent = dateTimeFull;
       document.getElementById('datetime2').textContent = dateOnly;
@@ -96,7 +107,6 @@
       const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
       let diff = now - startTime;
       if (diff < 0) diff = 0;
-
       const elapsedHours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
       const elapsedMinutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
       const elapsedSeconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
@@ -107,6 +117,12 @@
 
     updateDateTime();
     setInterval(updateDateTime, 1000);
+
+    // Nhấp nháy văn bản
+    setInterval(() => {
+      const blinking = document.getElementById('blinkingText');
+      blinking.style.visibility = (blinking.style.visibility === 'hidden') ? 'visible' : 'hidden';
+    }, 500);
   </script>
 </body>
 </html>
