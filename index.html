@@ -87,33 +87,53 @@
   <div id="elapsedTime" class="elapsed-time">Loading...</div>
 
   <script>
-    function updateDateTime() {
-      const now = new Date();
+     function updateDateTime() {
+  const now = new Date();
 
-      const yyyy = now.getFullYear();
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
 
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mi = String(now.getMinutes()).padStart(2, '0');
-      const ss = String(now.getSeconds()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mi = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
 
-      const dateTimeFull = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
-      const dateOnly = `${yyyy}-${mm}-${dd}  08:00`;
+  const dateTimeFull = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+  document.getElementById('datetime1').textContent = dateTimeFull;
 
-      document.getElementById('datetime1').textContent = dateTimeFull;
-      document.getElementById('datetime2').textContent = dateOnly;
+  // Hiển thị mốc giờ 08:00 của ngày hôm nay
+  const dateOnly = `${yyyy}-${mm}-${dd}  08:00`;
+  document.getElementById('datetime2').textContent = dateOnly;
 
-      const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
-      let diff = now - startTime;
-      if (diff < 0) diff = 0;
-      const elapsedHours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
-      const elapsedMinutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
-      const elapsedSeconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+  // === TÍNH MỐC THỜI GIAN GẦN NHẤT CHIA HẾT CHO 12 GIỜ TỪ 08:00 ===
+  const hour = now.getHours();
+  let startTime;
 
-      const elapsedStr = `${elapsedHours}:${elapsedMinutes}:${elapsedSeconds}`;
-      document.getElementById('elapsedTime').textContent = elapsedStr;
-    }
+  if (hour >= 8 && hour < 20) {
+    // Trong khoảng 08:00 - 19:59:59 → mốc là 08:00 hôm nay
+    startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
+  } else if (hour >= 20) {
+    // Sau 20:00 → mốc là 20:00 hôm nay
+    startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 0, 0);
+  } else {
+    // Trước 08:00 → mốc là 20:00 hôm qua
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    startTime = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 20, 0, 0);
+  }
+
+  // Tính thời gian đã trôi qua từ mốc startTime
+  let diff = now - startTime;
+  if (diff < 0) diff = 0; // Tránh sai lệch
+
+  const elapsedHours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+  const elapsedMinutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+  const elapsedSeconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+
+  const elapsedStr = `${elapsedHours}:${elapsedMinutes}:${elapsedSeconds}`;
+  document.getElementById('elapsedTime').textContent = elapsedStr;
+}
+
 
     updateDateTime();
     setInterval(updateDateTime, 1000);
@@ -126,3 +146,4 @@
   </script>
 </body>
 </html>
+
